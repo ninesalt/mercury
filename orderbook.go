@@ -5,18 +5,11 @@ import (
 	"fmt"
 )
 
-// TODO: move this to another file
-type Order struct {
-	Price    int
-	Amount   int
-	Stock    string // should probably rename this to something more general
-	Type     string // buy/sell
-	IsMarket bool   // if market or limit order
-}
-
 type OrderBook struct {
-	Asks []Order
-	Bids []Order
+	Stock string //rename this to something more general
+	Asks  []Order
+	Bids  []Order
+	// add volume and last price here?
 }
 
 func (ob *OrderBook) SubmitOrder(o Order) error {
@@ -44,8 +37,8 @@ func (*OrderBook) CalculateSpread() int {
 }
 
 func main() {
-	o := Order{Type: "buy"}
-	book := OrderBook{}
+	o, _ := CreateOrder(1, 3, "buy", false, false)
+	book := OrderBook{Stock: "AAPL"}
 	book.SubmitOrder(o)
 	fmt.Println(book)
 }
