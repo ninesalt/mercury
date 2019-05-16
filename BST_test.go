@@ -5,9 +5,13 @@ import (
 	"reflect"
 	"sort"
 	"testing"
+	"time"
 )
 
 func TestAdd(t *testing.T) {
+
+	// this is necessary so that random numbers aren't always the same
+	rand.Seed(time.Now().UnixNano())
 
 	// Tree object to be tested
 	tree := Tree{nil}
@@ -24,9 +28,11 @@ func TestAdd(t *testing.T) {
 	// Get list of sorted order prices from our tree
 	tmp := tree.Flatten()
 	orders := []float32{}
-	for i := 0; i < len(tmp); i++ {
-		orders = append(orders, tmp[i].Price)
+
+	for _, order := range tmp {
+		orders = append(orders, order.Price)
 	}
+
 	// Sort control slice
 	sort.Slice(control, func(i, j int) bool { return control[i] < control[j] })
 
