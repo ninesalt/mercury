@@ -1,4 +1,4 @@
-package main
+package user
 
 // This is a very basic module that creates users and manages balances
 // as of now it doesn't have any functionality that can get aggregate balances of

@@ -26,6 +26,5 @@ func CreateOrder(price, amount float32, ordertype string, pfill bool, IsMarket b
 		return Order{}, errors.New("Amount must be a positive integer greater than 0")
 	}
 	timeNow := time.Now().UTC()
-
 	return Order{price, amount, ordertype, IsMarket, pfill, timeNow}, nil
 }
