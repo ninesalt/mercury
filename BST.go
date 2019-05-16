@@ -1,8 +1,8 @@
 package main
 
 type node struct {
-	order  Order
 	key    float32
+	value  interface{}
 	parent *node
 	left   *node
 	right  *node
@@ -23,25 +23,26 @@ func (n *node) inOrder(fn func(n *node)) {
 }
 
 // Flatten tree and return in-order array of orders
-func (tree *Tree) Flatten() []Order {
-	var orders []Order
+func (tree *Tree) Flatten() []interface{} {
+	var values []interface{}
 	fn := func(n *node) {
-		orders = append(orders, n.order)
+		values = append(values, n.value)
 	}
 	tree.root.inOrder(fn)
-	return orders
+	return values
 }
 
-func newNode(order Order) *node {
+// Create new node with (key, value) pair.
+func newNode(key float32, value interface{}) *node {
 	var n node
-	n.key = order.Price
-	n.order = order
+	n.key = key
+	n.value = value
 	return &n
 }
 
-// Add Order to tree
-func (tree *Tree) Add(order Order) {
-	tree.insert(newNode(order))
+// Add (key, value) pair to tree
+func (tree *Tree) Add(key float32, value interface{}) {
+	tree.insert(newNode(key, value))
 }
 
 // Insert node into tree

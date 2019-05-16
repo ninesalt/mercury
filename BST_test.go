@@ -20,26 +20,26 @@ func TestAdd(t *testing.T) {
 	tree := Tree{nil}
 
 	// Using slice as control
-	control := []float32{}
+	control := []Order{}
 
 	// Create and insert orders
 	for i := 0; i < 20; i++ {
-		o, _ := CreateOrder(rand.Float32(), 3, "buy", false, false)
-		tree.Add(o)
-		control = append(control, o.Price)
+		order, _ := CreateOrder(rand.Float32(), 3, "buy", false, false)
+		tree.Add(order.Price, order)
+		control = append(control, order)
 	}
-	// Get list of sorted order prices from our tree
-	tmp := tree.Flatten()
-	orders := []float32{}
 
-	for _, order := range tmp {
-		orders = append(orders, order.Price)
+	// Get list of in-order (sorted) orders from our tree
+	orders := tree.Flatten()
+	got := []Order{}
+	for _, order := range orders {
+		// Need type assertion to change interface{} to Order
+		got = append(got, order.(Order))
 	}
 
 	// Sort control slice
-	sort.Slice(control, func(i, j int) bool { return control[i] < control[j] })
+	sort.Slice(control, func(i, j int) bool { return control[i].Price < control[j].Price })
 
-	got := orders
 	want := control
 	// Compare the lists of prices
 	if !reflect.DeepEqual(want, got) {
