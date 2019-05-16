@@ -8,10 +8,13 @@ import (
 	"time"
 )
 
-func TestAdd(t *testing.T) {
-
+// init runs before all tests
+func init() {
 	// this is necessary so that random numbers aren't always the same
 	rand.Seed(time.Now().UnixNano())
+}
+
+func TestAdd(t *testing.T) {
 
 	// Tree object to be tested
 	tree := Tree{nil}
