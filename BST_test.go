@@ -6,6 +6,8 @@ import (
 	"sort"
 	"testing"
 	"time"
+
+	"./src/user"
 )
 
 // init runs before all tests
@@ -21,10 +23,11 @@ func TestAdd(t *testing.T) {
 
 	// Using slice as control
 	control := []Order{}
+	u := user.CreateUser("john")
 
 	// Create and insert orders
 	for i := 0; i < 20; i++ {
-		order, _ := CreateOrder(rand.Float32(), 3, "buy", false, false)
+		order, _ := CreateOrder(u, rand.Float32(), 3, "buy", false, false)
 		tree.Add(order.Price, order)
 		control = append(control, order)
 	}

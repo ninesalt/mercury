@@ -2,6 +2,9 @@ package main
 
 import (
 	"errors"
+	"fmt"
+
+	"./src/user"
 )
 
 type OrderBook struct {
@@ -35,8 +38,29 @@ func (ob *OrderBook) SubmitOrder(o Order) error {
 	return nil
 }
 
-func (ob *OrderBook) FillOrder(bid Order, ask Order) {
-	//TODO
+func (ob *OrderBook) Monitor() {
+	// ticks := time.Tick(2 * time.Second)
+	// for now := range ticks {
+	// 	fmt.Println(now)
+	// }
+}
+
+func (ob *OrderBook) FillOrder(bid *Order, ask *Order) {
+	seller := ask.User
+	stock := ob.Stock
+	buyer := bid.User
+	amount := ask.Amount
+
+	//TODO: make this part atomic
+	seller.SubtractFromBalance(stock, amount)
+	buyer.AddToBalance(stock, amount)
+	bid.AmountFilled += amount
+	ask.AmountFilled += amount
+
+	if bid.AmountFilled == bid.Amount {
+		// delete bid from OB
+	}
+
 }
 
 func (*OrderBook) CalculateSpread() int {
@@ -50,9 +74,19 @@ func CreateOrderBook(stock string) OrderBook {
 }
 
 func main() {
-	o, _ := CreateOrder(12.41, 3, "buy", false, false)
-	o2, _ := CreateOrder(12.41, 3, "sell", false, false)
+	a := user.CreateUser("adam")
+	e := user.CreateUser("eve")
+
+	o, _ := CreateOrder(a, 12.41, 3, "buy", false, false)
+	o2, _ := CreateOrder(e, 12.41, 3, "sell", false, false)
+
+	fmt.Println(o, o2)
 	book := CreateOrderBook("AAPL")
-	book.SubmitOrder(o)
-	book.SubmitOrder(o2)
+	book.FillOrder(&o, &o2)
+	fmt.Println(o, o2)
+	fmt.Println(book)
+	book.Monitor()
+	// book.SubmitOrder(o)
+	// book.SubmitOrder(o2)
+	// fmt.Println(book)
 }
