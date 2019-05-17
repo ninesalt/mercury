@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -12,7 +11,6 @@ func init() {
 }
 
 func TestAddToBalance(t *testing.T) {
-	fmt.Println("|ee")
 	stock := "AAPL"
 	toAdd := float32(10)
 	oldBalance := u.Balances()[stock]
